@@ -85,4 +85,88 @@ const singinController = async (req , res) => {
 }
 
 
-export { registerController , singinController};
+import { OAuth2Client } from "google-auth-library";
+
+const googleClient = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID
+);
+
+const googleSigninController = async (req, res) => {
+  const { credential } = req.body;
+
+  try {
+    if (!credential) {
+      return res.status(400).json({
+        success: false,
+        message: "Google credential is required",
+      });
+    }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    const {
+      sub: googleId,
+      email,
+      name,
+      picture,
+    } = payload;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Google account email not found",
+      });
+    }
+
+    let user = await studentModel.findOne({ email });
+
+    if (!user) {
+      user = await studentModel.create({
+        name,
+        email,
+        googleId,
+        imageUrl: picture,
+      });
+    } else {
+      if (!user.googleId) {
+        user.googleId = googleId;
+        user.imageUrl = user.imageUrl || picture;
+
+        await user.save();
+      }
+    }
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+      },
+      process.env.topSecret,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Google Sign In Successfully",
+      token: token,
+      data: user
+    });
+
+  } catch (error) {
+    console.log("Google Signin Error:", error);
+
+    return res.status(401).json({
+      success: false,
+      message: "Invalid Google credential",
+    });
+  }
+};
+
+
+export { registerController , singinController , googleSigninController};

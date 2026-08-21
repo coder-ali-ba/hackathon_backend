@@ -9,18 +9,15 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    number: {
-        type: String,
-        required: true
-    },
-    password:{
-        type: String,
-        required: true
-    },
-    imageUrl: {
-        type: String,
-        required: true
-    }
+    number: String,
+    password: String,
+    imageUrl: String,
+
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
 },{timestamps: true})
 
 const studentModel = mongoose.model("students" , studentSchema);
