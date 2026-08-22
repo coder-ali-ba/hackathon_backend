@@ -6,7 +6,7 @@ import { createProjectController, deleteProjectController, getAllProjectsControl
 const projectRouter = express.Router()
 
 
-projectRouter.post("/create" ,authMiddleware , authorizeRoles("admin"), createProjectController)
+projectRouter.post("/create"  , authorizeRoles("admin"), createProjectController)
 projectRouter.get("/getallProjects", authMiddleware ,  getAllProjectsControllers);
 
 projectRouter.get("/:id",authMiddleware , getProjectByIdController);

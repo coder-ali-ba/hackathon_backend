@@ -194,6 +194,7 @@ const deleteProjectController = async (req, res) => {
   }
 };
 
+
 export {
   createProjectController,
   getAllProjectsControllers,
