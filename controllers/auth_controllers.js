@@ -1,11 +1,20 @@
 import studentModel from "../models/student_models.js";
 import brcypt from "bcrypt";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
 const registerController = async (req, res) => {
-  const { name, email, number, password, city , skills, userType, imageUrl } = req.body;
+  const { name, email, number, password, city, skills, userType, imageUrl } =
+    req.body;
   try {
-    if (!name || !email || !number || !password || !imageUrl || !city || !userType ) {
+    if (
+      !name ||
+      !email ||
+      !number ||
+      !password ||
+      !imageUrl ||
+      !city ||
+      !userType
+    ) {
       return res.status(400).json({
         success: false,
         message: "Incomplete Required Fields",
@@ -39,7 +48,7 @@ const registerController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    
+
     res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -47,54 +56,57 @@ const registerController = async (req, res) => {
   }
 };
 
-const singinController = async (req , res) => {
-    const {email , password} =req.body;
-    try {
-        if(!email || !password){
-            return res.status(400).json({
-                success: false,
-                message: "Incomplete required fields"
-            })
-        }
-
-        const checkEmail = await studentModel.findOne({email});
-
-        if(!checkEmail){
-            return res.status(400).json({
-                success: false,
-                message: "Email or password is not valid"
-            })
-        }
-
-        const checkPassword = await brcypt.compare(password , checkEmail.password);
-        if(!checkPassword){
-            return res.status(400).json({
-                success: false,
-                message: "Email or password is not valid"
-            })
-        }
-
-        const token = jwt.sign({id: checkEmail._id} , process.env.topSecret)
-
-        res.status(200).json({
-            success: true,
-            message: "Signed In Successfully",
-            token: token
-        })
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Something went wrong"
-        })
+const singinController = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Incomplete required fields",
+      });
     }
-}
 
+    const checkEmail = await studentModel.findOne({ email });
+
+    if (!checkEmail) {
+      return res.status(400).json({
+        success: false,
+        message: "Email or password is not valid",
+      });
+    }
+
+    const checkPassword = await brcypt.compare(password, checkEmail.password);
+    if (!checkPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Email or password is not valid",
+      });
+    }
+
+    const token = jwt.sign({ id: checkEmail._id }, process.env.topSecret);
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      user: {
+        id: checkEmail._id,
+        name: checkEmail.name,
+        email: checkEmail.email,
+        userType: checkEmail.userType,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
 
 import { OAuth2Client } from "google-auth-library";
 
-const googleClient = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID
-);
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const googleSigninController = async (req, res) => {
   const { credential } = req.body;
@@ -114,12 +126,7 @@ const googleSigninController = async (req, res) => {
 
     const payload = ticket.getPayload();
 
-    const {
-      sub: googleId,
-      email,
-      name,
-      picture,
-    } = payload;
+    const { sub: googleId, email, name, picture } = payload;
 
     if (!email) {
       return res.status(400).json({
@@ -153,16 +160,15 @@ const googleSigninController = async (req, res) => {
       process.env.topSecret,
       {
         expiresIn: "7d",
-      }
+      },
     );
 
     return res.status(200).json({
       success: true,
       message: "Google Sign In Successfully",
       token: token,
-      data: user
+      data: user,
     });
-
   } catch (error) {
     console.log("Google Signin Error:", error);
 
@@ -173,5 +179,4 @@ const googleSigninController = async (req, res) => {
   }
 };
 
-
-export { registerController , singinController , googleSigninController};
+export { registerController, singinController, googleSigninController };

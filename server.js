@@ -5,6 +5,7 @@ import mongoose from "mongoose"
 import imageRouter from "./routes/image_routes.js"
 import authRouter from "./routes/auth_route.js"
 import cookieParser from "cookie-parser"
+import projectRouter from "./routes/project_routes.js"
 
 dotenv.config()
 
@@ -51,6 +52,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 app.use("/api/image" , imageRouter)
 app.use("/api/auth" , authRouter)
+app.use("/api/project" , projectRouter)
 
 app.use("/" , (req , res )=>{
     res.send("server is uppp")
