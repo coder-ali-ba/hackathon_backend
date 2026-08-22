@@ -11,6 +11,12 @@ const studentSchema = new mongoose.Schema({
     },
     number: String,
     password: String,
+    city: String,
+    skills:String,
+    userType:{
+      type:String,
+       enum:["user" , "projectManager" , "admin"]
+    },
     imageUrl: String,
 
   googleId: {

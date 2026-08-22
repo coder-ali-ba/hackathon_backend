@@ -3,9 +3,9 @@ import brcypt from "bcrypt";
 import jwt from "jsonwebtoken"
 
 const registerController = async (req, res) => {
-  const { name, email, number, password, imageUrl } = req.body;
+  const { name, email, number, password, city , skills, userType, imageUrl } = req.body;
   try {
-    if (!name || !email || !number || !password || !imageUrl) {
+    if (!name || !email || !number || !password || !imageUrl || !city || !userType ) {
       return res.status(400).json({
         success: false,
         message: "Incomplete Required Fields",
@@ -26,6 +26,9 @@ const registerController = async (req, res) => {
       email,
       number,
       password: hashPass,
+      skills,
+      userType,
+      city,
       imageUrl,
     });
 
