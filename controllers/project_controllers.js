@@ -109,18 +109,40 @@ const getProjectByIdController = async (req, res) => {
 
 // UPDATE / EDIT / APPROVE / REJECT
 const updateProjectController = async (req, res) => {
+  const {
+  projectTitle,
+  description,
+  category,
+  location,
+  startDate,
+  endDate,
+  requiredVolunteers,
+  skillsRequired,
+  projectImage,
+  status,
+} = req.body;
   try {
     const { id } = req.params;
 
     const updatedProject = await projectModel.findByIdAndUpdate(
-      id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-
+  id,
+  {
+    projectTitle,
+    description,
+    category,
+    location,
+    startDate,
+    endDate,
+    requiredVolunteers,
+    skillsRequired,
+    projectImage,
+    status,
+  },
+  {
+    new: true,
+    runValidators: true,
+  }
+);
     if (!updatedProject) {
       return res.status(404).json({
         success: false,
