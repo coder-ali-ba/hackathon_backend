@@ -3,7 +3,7 @@ import projectModel from "../models/project_model.js";
 
 
 // CREATE PROJECT
-export const createProjectController = async (req, res) => {
+const createProjectController = async (req, res) => {
   try {
     const {
       projectTitle,
@@ -61,7 +61,7 @@ export const createProjectController = async (req, res) => {
 };
 
 
-export const getAllProjectsControllers = async (req, res) => {
+const getAllProjectsControllers = async (req, res) => {
   try {
     const projects = await projectModel.find().sort({ createdAt: -1 });
 
@@ -81,7 +81,7 @@ export const getAllProjectsControllers = async (req, res) => {
 };
 
 
-export const getProjectByIdController = async (req, res) => {
+const getProjectByIdController = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -110,7 +110,7 @@ export const getProjectByIdController = async (req, res) => {
 };
 
 
-export const updateProjectController = async (req, res) => {
+const updateProjectController = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -168,7 +168,7 @@ export const updateProjectController = async (req, res) => {
 };
 
 
-export const deleteProjectController = async (req, res) => {
+const deleteProjectController = async (req, res) => {
   try {
     const { id } = req.params;
 
