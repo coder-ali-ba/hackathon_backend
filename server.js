@@ -21,7 +21,7 @@ const app =express()
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://hackathon-frontend-alxnx1nci-habibalis-projects.vercel.app",
+  "https://hackathon-frontend-chi-two.vercel.app",
 ];
 
 app.use(
