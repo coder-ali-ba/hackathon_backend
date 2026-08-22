@@ -1,6 +1,6 @@
 import express from "express";
 import upload from "../middlewares/multer_middleware.js";
-import { uploadImageController } from "../controllers/uploadimage_controller.js";
+import uploadImageController from "../controllers/uploadimage_controller.js"
 
 const imageRouter =express.Router()
 

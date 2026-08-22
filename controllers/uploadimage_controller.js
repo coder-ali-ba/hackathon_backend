@@ -1,7 +1,7 @@
 import cloudinary from "../configs/cloudinary_config.js";
 import streamifier from "streamifier"
 
-export const uploadImageController = async(req , res)=>{
+ const uploadImageController = async(req , res)=>{
     const file=req.file
     // console.log(file);
     try {
@@ -36,5 +36,7 @@ export const uploadImageController = async(req , res)=>{
     }
     
 }
+
+export default uploadImageController
 
 
