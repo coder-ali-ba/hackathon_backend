@@ -15,7 +15,7 @@ const studentSchema = new mongoose.Schema({
     skills:String,
     userType:{
       type:String,
-       enum:["user" , "projectManager" , "admin"]
+       enum:["user" , "projectManager"]
     },
     imageUrl: String,
 
