@@ -5,25 +5,21 @@ const projectSchema = new mongoose.Schema(
     projectTitle: {
       type: String,
       required: true,
-      trim: true,
     },
 
     description: {
       type: String,
       required: true,
-      trim: true,
     },
 
     category: {
       type: String,
       required: true,
-      trim: true,
     },
 
     location: {
       type: String,
       required: true,
-      trim: true,
     },
 
     startDate: {
@@ -36,21 +32,25 @@ const projectSchema = new mongoose.Schema(
       required: true,
     },
 
-    requiredVolunteers: {
-      type: Number,
+    assignedTo: {
+      type: String,
       required: true,
-      min: 1,
     },
 
     skillsRequired: {
-      type: [String],
-      required: true,
-      default: [],
+      type: String,
     },
 
-    projectImage: {
+    
+
+    status: {
       type: String,
-      required: true,
+      enum: [
+        "Pending",
+        "Approved",
+        "Rejected",
+      ],
+      default: "Pending",
     },
   },
   {
@@ -58,6 +58,9 @@ const projectSchema = new mongoose.Schema(
   }
 );
 
-const projectModel = mongoose.model("Project", projectSchema);
+const projectModel = mongoose.model(
+  "Project",
+  projectSchema
+);
 
 export default projectModel;
