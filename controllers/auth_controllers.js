@@ -35,6 +35,8 @@ const registerController = async (req, res) => {
       data: registerUser,
     });
   } catch (error) {
+    console.log(error);
+    
     res.status(500).json({
       success: false,
       message: "Something went wrong",

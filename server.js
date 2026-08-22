@@ -53,7 +53,7 @@ app.use("/api/image" , imageRouter)
 app.use("/api/auth" , authRouter)
 
 app.use("/" , (req , res )=>{
-    res.send("server is nalbo")
+    res.send("server is uppp")
 })
 
 app.listen(PORT , ()=>{
