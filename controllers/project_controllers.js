@@ -12,7 +12,7 @@ const createProjectController = async (req, res) => {
       endDate,
       assignedTo,
       skillsRequired,
-      projectImage,
+     
       status,
     } = req.body;
 
@@ -23,8 +23,7 @@ const createProjectController = async (req, res) => {
       !location ||
       !startDate ||
       !endDate ||
-      !assignedTo ||
-      !projectImage
+      !assignedTo 
     ) {
       return res.status(400).json({
         success: false,
@@ -41,7 +40,7 @@ const createProjectController = async (req, res) => {
       endDate,
       assignedTo,
       skillsRequired,
-      projectImage,
+      
       status: status || "Pending",
     });
 
