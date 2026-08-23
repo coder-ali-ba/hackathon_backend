@@ -182,4 +182,33 @@ const googleSigninController = async (req, res) => {
   }
 };
 
-export { registerController, singinController, googleSigninController };
+
+import studentModel from "../models/student_models.js";
+
+// GET ALL USERS NAMES
+
+const getAllUsersController = async (req, res) => {
+  try {
+    const users = await studentModel
+      .find()
+      .select("name email userType imageUrl city");
+
+    return res.status(200).json({
+      success: true,
+      message: "Users fetched successfully",
+      data: users,
+    });
+
+  } catch (error) {
+    console.log("GET ALL USERS ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+export { registerController, singinController, googleSigninController , getAllUsersController };
