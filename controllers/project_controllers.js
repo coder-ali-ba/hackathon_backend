@@ -1,6 +1,7 @@
 import projectModel from "../models/project_model.js";
 
-// CREATE PROJECT
+// ================= CREATE PROJECT =================
+
 const createProjectController = async (req, res) => {
   try {
     const {
@@ -12,7 +13,6 @@ const createProjectController = async (req, res) => {
       endDate,
       assignedTo,
       skillsRequired,
-     
       status,
     } = req.body;
 
@@ -23,7 +23,7 @@ const createProjectController = async (req, res) => {
       !location ||
       !startDate ||
       !endDate ||
-      !assignedTo 
+      !assignedTo
     ) {
       return res.status(400).json({
         success: false,
@@ -40,7 +40,6 @@ const createProjectController = async (req, res) => {
       endDate,
       assignedTo,
       skillsRequired,
-      
       status: status || "Pending",
     });
 
@@ -49,6 +48,7 @@ const createProjectController = async (req, res) => {
       message: "Project created successfully",
       data: project,
     });
+
   } catch (error) {
     console.log("CREATE PROJECT ERROR:", error);
 
@@ -59,7 +59,9 @@ const createProjectController = async (req, res) => {
   }
 };
 
-// GET ALL PROJECTS
+
+// ================= GET ALL PROJECTS =================
+
 const getAllProjectsControllers = async (req, res) => {
   try {
     const projects = await projectModel
@@ -71,6 +73,7 @@ const getAllProjectsControllers = async (req, res) => {
       message: "Projects fetched successfully",
       data: projects,
     });
+
   } catch (error) {
     console.log("GET PROJECTS ERROR:", error);
 
@@ -81,7 +84,9 @@ const getAllProjectsControllers = async (req, res) => {
   }
 };
 
-// GET SINGLE PROJECT
+
+// ================= GET SINGLE PROJECT =================
+
 const getProjectByIdController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -99,7 +104,10 @@ const getProjectByIdController = async (req, res) => {
       success: true,
       data: project,
     });
+
   } catch (error) {
+    console.log("GET SINGLE PROJECT ERROR:", error);
+
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -107,42 +115,48 @@ const getProjectByIdController = async (req, res) => {
   }
 };
 
-// UPDATE / EDIT / APPROVE / REJECT
+
+// ================= UPDATE PROJECT =================
+
 const updateProjectController = async (req, res) => {
-  const {
-  projectTitle,
-  description,
-  category,
-  location,
-  startDate,
-  endDate,
-  requiredVolunteers,
-  skillsRequired,
-  projectImage,
-  status,
-} = req.body;
   try {
     const { id } = req.params;
 
+    const {
+      projectTitle,
+      description,
+      category,
+      location,
+      startDate,
+      endDate,
+      assignedTo,
+      requiredVolunteers,
+      skillsRequired,
+      projectImage,
+      status,
+    } = req.body;
+
     const updatedProject = await projectModel.findByIdAndUpdate(
-  id,
-  {
-    projectTitle,
-    description,
-    category,
-    location,
-    startDate,
-    endDate,
-    requiredVolunteers,
-    skillsRequired,
-    projectImage,
-    status,
-  },
-  {
-    new: true,
-    runValidators: true,
-  }
-);
+      id,
+      {
+        projectTitle,
+        description,
+        category,
+        location,
+        startDate,
+        endDate,
+        assignedTo,
+        requiredVolunteers,
+        skillsRequired,
+        projectImage,
+        status,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
     if (!updatedProject) {
       return res.status(404).json({
         success: false,
@@ -155,6 +169,7 @@ const updateProjectController = async (req, res) => {
       message: "Project updated successfully",
       data: updatedProject,
     });
+
   } catch (error) {
     console.log("UPDATE PROJECT ERROR:", error);
 
@@ -165,13 +180,14 @@ const updateProjectController = async (req, res) => {
   }
 };
 
-// DELETE PROJECT
+
+// ================= DELETE PROJECT =================
+
 const deleteProjectController = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedProject =
-      await projectModel.findByIdAndDelete(id);
+    const deletedProject = await projectModel.findByIdAndDelete(id);
 
     if (!deletedProject) {
       return res.status(404).json({
@@ -183,7 +199,9 @@ const deleteProjectController = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Project deleted successfully",
+      data: deletedProject,
     });
+
   } catch (error) {
     console.log("DELETE PROJECT ERROR:", error);
 
@@ -195,8 +213,8 @@ const deleteProjectController = async (req, res) => {
 };
 
 
+// ================= APPROVE PROJECT =================
 
-// APPROVE PROJECT
 const approveProjectController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -236,7 +254,8 @@ const approveProjectController = async (req, res) => {
 };
 
 
-// REJECT PROJECT
+// ================= REJECT PROJECT =================
+
 const rejectProjectController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -275,12 +294,13 @@ const rejectProjectController = async (req, res) => {
   }
 };
 
+
 export {
   createProjectController,
   getAllProjectsControllers,
   getProjectByIdController,
   updateProjectController,
   deleteProjectController,
-  // approveProjectController,
-  // rejectProjectController,
+  approveProjectController,
+  rejectProjectController,
 };
