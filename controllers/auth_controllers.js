@@ -84,7 +84,7 @@ const singinController = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: checkEmail._id },  process.env.topSecret {
+    const token = jwt.sign({ id: checkEmail._id },  process.env.topSecret, {
         expiresIn: "7d",
       });
 
