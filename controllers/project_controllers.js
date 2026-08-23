@@ -195,10 +195,92 @@ const deleteProjectController = async (req, res) => {
 };
 
 
+
+// APPROVE PROJECT
+const approveProjectController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const project = await projectModel.findByIdAndUpdate(
+      id,
+      {
+        status: "Approved",
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Project approved successfully",
+      data: project,
+    });
+
+  } catch (error) {
+    console.log("APPROVE PROJECT ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+// REJECT PROJECT
+const rejectProjectController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const project = await projectModel.findByIdAndUpdate(
+      id,
+      {
+        status: "Rejected",
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Project rejected successfully",
+      data: project,
+    });
+
+  } catch (error) {
+    console.log("REJECT PROJECT ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 export {
   createProjectController,
   getAllProjectsControllers,
   getProjectByIdController,
   updateProjectController,
   deleteProjectController,
+  approveProjectController,
+  rejectProjectController,
 };
