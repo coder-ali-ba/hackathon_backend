@@ -3,7 +3,7 @@ import studentModel from "../models/student_models.js";
 
 const authMiddleware = async (req, res, next) => {
   try {
-    // 1. Cookie se token check karo
+    // 1. Cookie se token lene ki koshish
     let token = req.cookies?.token;
 
     // 2. Agar cookie mein nahi hai to Authorization header check karo
@@ -15,21 +15,20 @@ const authMiddleware = async (req, res, next) => {
       }
     }
 
-    // Token nahi mila
+    console.log("TOKEN RECEIVED:", token);
+
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Authentication required. Token not found.",
+        message: "Token not found",
       });
     }
 
-    // Token verify
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET
     );
 
-    // User find
     const user = await studentModel
       .findById(decoded.id)
       .select("-password");
@@ -46,11 +45,11 @@ const authMiddleware = async (req, res, next) => {
     next();
 
   } catch (error) {
-    console.log("AUTH MIDDLEWARE ERROR:", error.message);
+    console.log("AUTH ERROR:", error.message);
 
     return res.status(401).json({
       success: false,
-      message: "Invalid or expired token",
+      message: error.message,
     });
   }
 };
