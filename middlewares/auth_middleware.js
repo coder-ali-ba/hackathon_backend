@@ -3,30 +3,33 @@ import studentModel from "../models/student_models.js";
 
 const authMiddleware = async (req, res, next) => {
   try {
-    // 1. Cookie se token lene ki koshish
-    let token = req.cookies?.token;
+    let token;
 
-    // 2. Agar cookie mein nahi hai to Authorization header check karo
-    if (!token && req.headers.authorization) {
-      const authHeader = req.headers.authorization;
+    // Authorization header se token lo
+    const authHeader = req.headers.authorization;
 
-      if (authHeader.startsWith("Bearer ")) {
-        token = authHeader.split(" ")[1];
-      }
+    if (
+      authHeader &&
+      authHeader.startsWith("Bearer ")
+    ) {
+      token = authHeader.split(" ")[1];
     }
 
-    console.log("TOKEN RECEIVED:", token);
+    // Agar header mein nahi hai to cookie check karo
+    if (!token && req.cookies?.token) {
+      token = req.cookies.token;
+    }
 
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Token not found",
+        message: "Authentication required. Token not found",
       });
     }
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET
+      process.env.topSecret
     );
 
     const user = await studentModel
@@ -43,13 +46,12 @@ const authMiddleware = async (req, res, next) => {
     req.user = user;
 
     next();
-
   } catch (error) {
-    console.log("AUTH ERROR:", error.message);
+    console.log("AUTH MIDDLEWARE ERROR:", error.message);
 
     return res.status(401).json({
       success: false,
-      message: error.message,
+      message: "Invalid or expired token",
     });
   }
 };
