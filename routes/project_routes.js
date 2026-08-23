@@ -1,7 +1,7 @@
 import express from "express";
 import authMiddleware from "../middlewares/auth_middleware.js";
 import authorizeRoles from "../middlewares/role_middleware.js";
-import { approveProjectController, createProjectController, deleteProjectController, getAllProjectsControllers, getProjectByIdController, updateProjectController } from "../controllers/project_controllers.js";
+import { approveProjectController, createProjectController, deleteProjectController, getAllProjectsControllers, getProjectByIdController, rejectProjectController, updateProjectController } from "../controllers/project_controllers.js";
 
 const projectRouter = express.Router()
 
@@ -15,5 +15,6 @@ projectRouter.put("/:id",authMiddleware , authorizeRoles("admin"), updateProject
 
 projectRouter.delete("/:id",authMiddleware , authorizeRoles("admin"), deleteProjectController);
 projectRouter.put("/approve/:id",authMiddleware , authorizeRoles("admin"), approveProjectController);
+projectRouter.put("/reject/:id",authMiddleware , authorizeRoles("admin"), rejectProjectController);
 
 export default projectRouter
