@@ -1,20 +1,81 @@
 import express from "express";
+
 import authMiddleware from "../middlewares/auth_middleware.js";
 import authorizeRoles from "../middlewares/role_middleware.js";
-import {  approveProjectController, createProjectController, deleteProjectController, getAllProjectsControllers, getProjectByIdController, rejectProjectController, updateProjectController } from "../controllers/project_controllers.js";
 
-const projectRouter = express.Router()
+import {
+  approveProjectController,
+  createProjectController,
+  deleteProjectController,
+  getAllProjectsControllers,
+  getProjectByIdController,
+  rejectProjectController,
+  updateProjectController,
+} from "../controllers/project_controllers.js";
+
+const projectRouter = express.Router();
 
 
-projectRouter.post("/create" ,authMiddleware , authorizeRoles("admin"), createProjectController)
-projectRouter.get("/getallProjects", authMiddleware ,  getAllProjectsControllers);
+// ================= CREATE PROJECT =================
+projectRouter.post(
+  "/create",
+  authMiddleware,
+  authorizeRoles("admin"),
+  createProjectController
+);
 
-projectRouter.get("/:id",authMiddleware , getProjectByIdController);
 
-projectRouter.put("/:id",authMiddleware , authorizeRoles("admin"), updateProjectController);
+// ================= GET ALL PROJECTS =================
+projectRouter.get(
+  "/getallProjects",
+  authMiddleware,
+  getAllProjectsControllers
+);
 
-projectRouter.delete("/:id",authMiddleware , authorizeRoles("admin"), deleteProjectController);
-projectRouter.put("/approve/:id",authMiddleware , authorizeRoles("admin"), approveProjectController);
-projectRouter.put("/reject/:id",authMiddleware , authorizeRoles("admin"), rejectProjectController);
 
-export default projectRouter
+// ================= APPROVE PROJECT =================
+projectRouter.put(
+  "/approve/:id",
+  authMiddleware,
+  authorizeRoles("admin"),
+  approveProjectController
+);
+
+
+// ================= REJECT PROJECT =================
+projectRouter.put(
+  "/reject/:id",
+  authMiddleware,
+  authorizeRoles("admin"),
+  rejectProjectController
+);
+
+
+// ================= UPDATE PROJECT =================
+projectRouter.put(
+  "/:id",
+  authMiddleware,
+  authorizeRoles("admin"),
+  updateProjectController
+);
+
+
+// ================= DELETE PROJECT =================
+projectRouter.delete(
+  "/:id",
+  authMiddleware,
+  authorizeRoles("admin"),
+  deleteProjectController
+);
+
+
+// ================= GET SINGLE PROJECT =================
+// Dynamic route ko last mein rakhna better hai
+projectRouter.get(
+  "/:id",
+  authMiddleware,
+  getProjectByIdController
+);
+
+
+export default projectRouter;
