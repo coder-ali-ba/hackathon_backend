@@ -183,7 +183,7 @@ const googleSigninController = async (req, res) => {
 };
 
 
-import studentModel from "../models/student_models.js";
+
 
 // GET ALL USERS NAMES
 
