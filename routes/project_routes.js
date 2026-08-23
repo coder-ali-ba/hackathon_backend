@@ -14,7 +14,7 @@ projectRouter.get("/:id",authMiddleware , getProjectByIdController);
 projectRouter.put("/:id",authMiddleware , authorizeRoles("admin"), updateProjectController);
 
 projectRouter.delete("/:id",authMiddleware , authorizeRoles("admin"), deleteProjectController);
-projectRouter.put("/approve/:id",authMiddleware , authorizeRoles("admin"), approveProjectController);
-projectRouter.put("/reject/:id",authMiddleware , authorizeRoles("admin"), rejectProjectController);
+// projectRouter.put("/approve/:id",authMiddleware , authorizeRoles("admin"), approveProjectController);
+// projectRouter.put("/reject/:id",authMiddleware , authorizeRoles("admin"), rejectProjectController);
 
 export default projectRouter
