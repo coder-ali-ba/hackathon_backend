@@ -3,7 +3,7 @@ import brcypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const registerController = async (req, res) => {
-  const { name, email, number, password, city, skills, userType, imageUrl } =
+  const { name, email, number, password, city, skills, userType,  imageUrl } =
     req.body;
   try {
     if (

@@ -1,6 +1,7 @@
 import express from "express";
 import { getAllUsersController, googleSigninController, registerController, singinController } from "../controllers/auth_controllers.js";
 import authMiddleware from "../middlewares/auth_middleware.js";
+import authorizeRoles from "../middlewares/role_middleware.js";
 
 const authRouter = express.Router()
 
