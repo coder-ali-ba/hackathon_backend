@@ -1,7 +1,7 @@
 import express from "express";
 import authMiddleware from "../middlewares/auth_middleware.js";
 import authorizeRoles from "../middlewares/role_middleware.js";
-import { approveProjectController, createProjectController, deleteProjectController, getAllProjectsControllers, getProjectByIdController, rejectProjectController, updateProjectController } from "../controllers/project_controllers.js";
+import {  approveProjectController, createProjectController, deleteProjectController, getAllProjectsControllers, getProjectByIdController, rejectProjectController, updateProjectController } from "../controllers/project_controllers.js";
 
 const projectRouter = express.Router()
 
